@@ -8,7 +8,7 @@ const TopNav = () => {
   const hasSearchBar = pathName == '/' || pathName == '/favorites'
 
   return (
-    <header className="navbar bg-base-100 flex-wrap md:flex-nowrap gap-3">
+    <header className="navbar fixed top-0 bg-base-100 flex-wrap md:flex-nowrap gap-3">
       <div className="flex-1 md:flex-none">
         <Link className="btn btn-ghost text-xl" href="/">VGS</Link>
       </div>
