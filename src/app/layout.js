@@ -1,6 +1,5 @@
 import { Poppins } from 'next/font/google'
 import './globals.css'
-import NavBar from '@/components/NavBar';
 import { Toaster } from 'react-hot-toast';
 
 const poppins = Poppins({
@@ -38,11 +37,7 @@ const RootLayout = ({ children }) => {
             }
           }}
         />
-        <NavBar>
-          <main className="overflow-y-auto my-16 py-2 px-4">
-            {children}
-          </main>
-        </NavBar>
+        {children}
       </body>
     </html>
   )
