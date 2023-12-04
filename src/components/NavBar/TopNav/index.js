@@ -1,14 +1,10 @@
 'use client'
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
-const TopNav = () => {
-  const pathName = usePathname()
-  const hasSearchBar = pathName == '/' || pathName == '/favorites'
-
+const TopNav = ({ hasSearchBar = false }) => {
   return (
-    <header className="navbar fixed top-0 bg-base-100 flex-wrap md:flex-nowrap gap-3">
+    <header className="navbar fixed top-0 bg-base-100 flex-wrap md:flex-nowrap gap-3 z-20">
       <div className="flex-1 md:flex-none">
         <Link className="btn btn-ghost text-xl" href="/">VGS</Link>
       </div>
@@ -18,7 +14,7 @@ const TopNav = () => {
         <Link className="btn btn-ghost text-xl" href="/favorites">Favorites</Link>
       </div>
       {hasSearchBar && (
-        <div div className="w-full flex-none md:shrink md:w-fit">
+        <div className="w-full flex-none md:shrink md:w-fit">
           <input type="text" placeholder="Search" className="input input-bordered w-full" />
         </div>
       )}

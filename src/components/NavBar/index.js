@@ -1,10 +1,10 @@
 import BottomNav from "./BottomNav";
 import TopNav from "./TopNav";
 
-const NavBar = ({ children }) => {
+const NavBar = ({ children, hasSearchBar }) => {
   return (
     <>
-      <TopNav />
+      <TopNav hasSearchBar={hasSearchBar} />
       {children}
       <BottomNav />
     </>
