@@ -1,3 +1,4 @@
 import itemSchema from "./itemSchema";
+import categorySchema from "./categorySchema";
 
-export { itemSchema };
+export { itemSchema, categorySchema };
