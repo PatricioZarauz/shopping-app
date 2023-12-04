@@ -12,7 +12,7 @@ const AutoCompleteInput = ({ options, label, control, name }) => {
       render={({ field: { onChange, value }, fieldState: { invalid, error } }) => (
         <label className="form-control w-full">
           <div className="label">
-            <span className={cn("label-text", { 'text-error': invalid })}>{label}</span>
+            <span className={cn("label-text font-bold", { 'text-error': invalid })}>{label}</span>
           </div>
           <Select
             instanceId={`${name}-selector`}
