@@ -11,7 +11,7 @@ const TextInput = ({ label, control, name }) => {
       render={({ field: { onChange, value }, fieldState: { invalid, error } }) => (
         <label className="form-control w-full">
           <div className="label">
-            <span className={cn("label-text", { 'text-error': invalid })}>{label}</span>
+            <span className={cn("label-text font-bold", { 'text-error': invalid })}>{label}</span>
           </div>
           <input type="text" placeholder={label} value={value} onChange={onChange} className={cn("input input-bordered", { 'input-error': invalid })} />
           <div className="label">

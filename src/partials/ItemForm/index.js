@@ -21,13 +21,9 @@ const ItemForm = () => {
   });
 
   const onSubmit = (data) => {
-    toast.success('Successfully created!', {
-      style: {
-        borderWidth: 3
-      }
-    });
-    toast.error('Error created!');
     console.log('data: ', data);
+    toast.success('Successfully created!');
+    toast.error('Error created!');
   };
 
   return (
