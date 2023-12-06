@@ -1,5 +1,6 @@
 'use client'
 
+import SearchBar from "@/partials/SearchBar";
 import Link from "next/link";
 
 const TopNav = ({ hasSearchBar = false }) => {
@@ -13,11 +14,7 @@ const TopNav = ({ hasSearchBar = false }) => {
         <Link className="btn btn-ghost text-xl" href="/items/create">Items</Link>
         <Link className="btn btn-ghost text-xl" href="/favorites">Favorites</Link>
       </div>
-      {hasSearchBar && (
-        <div className="w-full flex-none md:shrink md:w-fit">
-          <input type="text" placeholder="Search" className="input input-bordered w-full" />
-        </div>
-      )}
+      {hasSearchBar && (<SearchBar />)}
     </header >
   );
 };
