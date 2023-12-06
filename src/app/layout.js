@@ -1,6 +1,7 @@
 import { Poppins } from 'next/font/google'
 import './globals.css'
 import { Toaster } from 'react-hot-toast';
+import { RiInformationFill } from 'react-icons/ri';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -32,6 +33,14 @@ const RootLayout = ({ children }) => {
               style: {
                 borderWidth: 3,
                 borderColor: '#dc2626'
+              },
+              className: "alert"
+            },
+            blank: {
+              icon: <RiInformationFill size={25} color="#0891B2" />,
+              style: {
+                borderColor: '#0891B2',
+                borderWidth: 3
               },
               className: "alert"
             }
