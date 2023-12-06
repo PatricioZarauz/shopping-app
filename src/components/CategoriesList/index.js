@@ -4,7 +4,7 @@ import { useState } from "react";
 import { DragDropContext } from "@hello-pangea/dnd";
 import CategoryAccordion from "../CategoryAccordion";
 
-const CategoriesList = ({ categories }) => {
+const CategoriesList = ({ categories, displayFavDate = false }) => {
   const [categoriesStore, setCategoriesStore] = useState(categories);
 
   const handleDragEnd = ({ destination, source }) => {
@@ -28,7 +28,7 @@ const CategoriesList = ({ categories }) => {
     <DragDropContext onDragEnd={handleDragEnd}>
       <div className="flex flex-col gap-2">
         {Object.keys(categoriesStore).map((category, index) => (
-          <CategoryAccordion key={`category-${index}`} {...categoriesStore[category]} />
+          <CategoryAccordion key={`category-${index}`} {...categoriesStore[category]} displayFavDate={displayFavDate} />
         ))}
       </div>
     </DragDropContext>
