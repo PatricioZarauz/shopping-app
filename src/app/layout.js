@@ -1,7 +1,7 @@
 import { Poppins } from 'next/font/google'
 import './globals.css'
-import NavBar from '@/components/NavBar';
 import { Toaster } from 'react-hot-toast';
+import { RiInformationFill } from 'react-icons/ri';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -35,14 +35,18 @@ const RootLayout = ({ children }) => {
                 borderColor: '#dc2626'
               },
               className: "alert"
+            },
+            blank: {
+              icon: <RiInformationFill size={25} color="#0891B2" />,
+              style: {
+                borderColor: '#0891B2',
+                borderWidth: 3
+              },
+              className: "alert"
             }
           }}
         />
-        <NavBar>
-          <main className="overflow-y-auto my-16 py-2 px-4">
-            {children}
-          </main>
-        </NavBar>
+        {children}
       </body>
     </html>
   )
