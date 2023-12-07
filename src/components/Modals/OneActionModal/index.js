@@ -42,9 +42,8 @@ const OneActionModal = ({ onCloseHandler, mainActionHandler, mainActionText = "O
               mainActionHandler();
               exitAction();
             }}
-          >
-            {mainActionText}
-          </LoadingButton>
+            content={mainActionText}
+          />
         </div>
       </div>
     </dialog >
