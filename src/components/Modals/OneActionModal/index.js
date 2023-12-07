@@ -2,8 +2,9 @@
 
 import { useEffect, useRef } from "react";
 import ModalWrapper from "../ModalWrapper";
+import LoadingButton from "@/components/LoadingButton";
 
-const OneActionModal = ({ onCloseHandler, mainActionHandler, mainActionText = "OK", title, content, cancelActionText = "Cancel" }) => {
+const OneActionModal = ({ onCloseHandler, mainActionHandler, mainActionText = "OK", title, content, cancelActionText = "Cancel", isLoading }) => {
   const modalRef = useRef(null);
 
   const exitAction = () => {
@@ -34,15 +35,16 @@ const OneActionModal = ({ onCloseHandler, mainActionHandler, mainActionText = "O
           >
             {cancelActionText}
           </button>
-          <button
-            className="btn btn-primary"
-            onClick={() => {
+          <LoadingButton
+            styleProp="btn-primary"
+            isLoading={isLoading}
+            onClickAction={() => {
               mainActionHandler();
               exitAction();
             }}
           >
             {mainActionText}
-          </button>
+          </LoadingButton>
         </div>
       </div>
     </dialog >
