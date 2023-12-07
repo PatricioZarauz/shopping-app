@@ -17,7 +17,7 @@ const AutoCompleteInput = ({ options, label, control, name }) => {
           <Select
             instanceId={`${name}-selector`}
             options={options}
-            value={options.find((o) => o.value === value)}
+            value={options.find((o) => o.value === value) || ''}
             onChange={(val) => onChange(val && val.value)}
             unstyled
             styles={{
