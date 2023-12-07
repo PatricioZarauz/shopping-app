@@ -9,7 +9,7 @@ const BottomNav = () => {
   const pathname = usePathname();
   return (
     <nav className="btm-nav md:hidden z-20">
-      <Link className={cn("text-accent", { active: pathname == '/' })} href="/">
+      <Link className={cn("text-accent", { active: pathname == '/' })} href="/" data-testid="home-button">
         <div className="flex flex-col text-xl items-center gap-y-1">
           {pathname == '/' ? <RiHome2Fill /> : <RiHome2Line />}
           <span className="text-xs">
