@@ -7,13 +7,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --watch --coverage",
+    "test": "jest --coverage",
     "test:ci": "jest --ci"
   },
   "dependencies": {
     "@hello-pangea/dnd": "^16.3.0",
     "@hookform/resolvers": "^3.3.2",
     "@tailwindcss/line-clamp": "^0.4.4",
+    "@types/jest": "^29.5.11",
     "clsx": "^2.0.0",
     "dayjs": "^1.11.10",
     "firebase": "^10.7.1",
