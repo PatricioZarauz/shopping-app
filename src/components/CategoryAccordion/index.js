@@ -7,9 +7,15 @@ import { cn } from "@/lib/utils";
 import { textColorBasedOnBgColor } from "@/helpers";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { OneActionModal } from "../Modals";
+import { deleteDoc, doc } from "firebase/firestore";
+import { db } from "@/firebase";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
-const CategoryAccordion = ({ labelColor, name, displayFavDate = false, items }) => {
+const CategoryAccordion = ({ id: categoryId, labelColor, name, displayFavDate = false, items }) => {
   const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
   const whiteText = '#FFFFFF' === textColorBasedOnBgColor(labelColor);
   const textColor = {
     "text-base-100": whiteText,
@@ -38,23 +44,27 @@ const CategoryAccordion = ({ labelColor, name, displayFavDate = false, items }) 
           </div>
         </div>
         <div className="collapse-content">
-          <Droppable droppableId={name} type={name} isDropDisabled={false}>
+          <Droppable droppableId={categoryId} type={categoryId} isDropDisabled={false}>
             {(provided) => (
               <ul {...provided.droppableProps} ref={provided.innerRef}>
-                {items.map((item, index) => (
-                  <Draggable key={`${item.name}-${index}`} draggableId={item.name} index={index}>
-                    {(provided) => (
-                      <li
-                        className="my-1 cursor-grab active:cursor-grabbing rounded-md"
-                        {...provided.dragHandleProps}
-                        {...provided.draggableProps}
-                        ref={provided.innerRef}
-                      >
-                        <ItemCard {...item} displayFavDate={displayFavDate} />
-                      </li>
-                    )}
-                  </Draggable>
-                ))}
+                {items ? (
+                  items.map((item, index) => (
+                    <Draggable key={item.id} draggableId={item.id} index={index}>
+                      {(provided) => (
+                        <li
+                          className="my-1 cursor-grab active:cursor-grabbing rounded-md"
+                          {...provided.dragHandleProps}
+                          {...provided.draggableProps}
+                          ref={provided.innerRef}
+                        >
+                          <ItemCard {...item} displayFavDate={displayFavDate} />
+                        </li>
+                      )}
+                    </Draggable>
+                  ))
+                ) : (
+                  <p className={cn("text-xl text-center", { "text-base-100": whiteText, "text-primary-content": !whiteText })}>No items yet</p>
+                )}
                 {provided.placeholder}
               </ul>
             )}
@@ -67,9 +77,23 @@ const CategoryAccordion = ({ labelColor, name, displayFavDate = false, items }) 
           mainActionText="Delete"
           content={<p className="py-4">{`Are you sure that you want to delete "${name}"?`}</p>}
           onCloseHandler={() => setShowModal(false)}
-          mainActionHandler={() => { console.log('Se Borro Category correctamente') }}
+          isLoading={isLoading}
+          mainActionHandler={async () => {
+            try {
+              setIsLoading(true);
+              await deleteDoc(doc(db, "categories", categoryId));
+              toast.success(`Successfully deleted "${name}" category!`);
+              router.reload();
+            } catch (e) {
+              toast.error('Sorry an error ocurred, please try again later');
+              console.error("Error deleting category: ", e);
+            } finally {
+              setIsLoading(false);
+            }
+          }}
         />
-      )}
+      )
+      }
     </>
   );
 };

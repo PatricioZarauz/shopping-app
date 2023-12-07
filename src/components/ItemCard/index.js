@@ -5,16 +5,30 @@ import { Fragment, useState } from "react";
 import toast from "react-hot-toast";
 import { RiStarFill, RiStarLine, RiDeleteBin6Line } from "react-icons/ri";
 import { OneActionModal } from "../Modals";
+import { setDoc, doc, deleteDoc } from "firebase/firestore";
+import { db } from "@/firebase";
+import dayjs from 'dayjs';
+import { useRouter } from "next/navigation";
 
-const ItemCard = ({ name = "Esto es un ejemplo", image = "https://daisyui.com/images/stock/photo-1635805737707-575885ab0820.jpg", favorite = false, favDate = "31/12/2023", displayFavDate = false }) => {
+const ItemCard = ({ id: itemId, name, image, favorite = false, favDate, displayFavDate = false }) => {
   const [isFavorite, setIsFavorite] = useState(favorite);
   const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
-  const handleFavoriteAction = (e) => {
+  const handleFavoriteAction = async (e) => {
     e.preventDefault();
-    const toastMessage = !isFavorite ? 'Item successfully added to favorites!' : 'Item removed from favorites!';
-    toast(toastMessage, { position: "bottom-right" });
-    setIsFavorite(!isFavorite);
+    try {
+      const newState = !isFavorite;
+      const favDate = newState ? dayjs().format('DD/MM/YYYY') : null;
+      await setDoc(doc(db, "items", itemId), { favorite: newState, favDate }, { merge: true });
+      const toastMessage = !isFavorite ? 'Item successfully added to favorites!' : 'Item removed from favorites!';
+      toast(toastMessage, { position: "bottom-right" });
+      setIsFavorite(newState);
+    } catch (e) {
+      toast.error('Sorry an error ocurred, please try again later');
+      console.error("Error changing the favorite the item: ", e);
+    }
   }
 
   return (
@@ -54,7 +68,20 @@ const ItemCard = ({ name = "Esto es un ejemplo", image = "https://daisyui.com/im
           mainActionText="Delete"
           content={<p className="py-4">{`Are you sure that you want to delete "${name}"?`}</p>}
           onCloseHandler={() => setShowModal(false)}
-          mainActionHandler={() => { console.log('Se Borro Item correctamente') }}
+          isLoading={isLoading}
+          mainActionHandler={async () => {
+            try {
+              setIsLoading(true);
+              await deleteDoc(doc(db, "items", itemId));
+              toast.success(`Successfully deleted "${name}" item!`);
+              router.refresh();
+            } catch (e) {
+              toast.error('Sorry an error ocurred, please try again later');
+              console.error("Error deleting the item: ", e);
+            } finally {
+              setIsLoading(false);
+            }
+          }}
         />
       )}
     </Fragment>
