@@ -12,6 +12,11 @@ import hash from 'md5';
 const ItemForm = ({ categories }) => {
   const { reset, handleSubmit, control } = useForm({
     mode: 'onSubmit',
+    defaultValues: {
+      favorite: false,
+      favDate: null,
+      categoryId: null
+    },
     resolver: yupResolver(itemSchema)
   });
 
@@ -19,8 +24,7 @@ const ItemForm = ({ categories }) => {
     const { categoryId, ...item } = data;
     try {
       const id = hash(item.name);
-      await setDoc(doc(db, "items", id), { name: item.name });
-      await setDoc(doc(db, "categories", categoryId, "items", id), item)
+      await setDoc(doc(db, "items", id), data);
       toast.success(`Successfully created "${item.name}" item!`);
       reset();
     } catch (e) {
