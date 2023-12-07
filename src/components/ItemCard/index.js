@@ -5,16 +5,29 @@ import { Fragment, useState } from "react";
 import toast from "react-hot-toast";
 import { RiStarFill, RiStarLine, RiDeleteBin6Line } from "react-icons/ri";
 import { OneActionModal } from "../Modals";
+import { setDoc, doc, deleteDoc } from "firebase/firestore";
+import { db } from "@/firebase";
+import dayjs from 'dayjs';
+import { useRouter } from "next/navigation";
 
-const ItemCard = ({ name = "Esto es un ejemplo", image = "https://daisyui.com/images/stock/photo-1635805737707-575885ab0820.jpg", favorite = false, favDate = "31/12/2023", displayFavDate = false }) => {
-  const [isFavorite, setIsFavorite] = useState(favorite);
+const ItemCard = ({ id: itemId, name, image, favorite = false, favDate, displayFavDate = false }) => {
   const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
-  const handleFavoriteAction = (e) => {
+  const handleFavoriteAction = async (e) => {
     e.preventDefault();
-    const toastMessage = !isFavorite ? 'Item successfully added to favorites!' : 'Item removed from favorites!';
-    toast(toastMessage, { position: "bottom-right" });
-    setIsFavorite(!isFavorite);
+    try {
+      const newState = !favorite;
+      const favDate = newState ? dayjs().format('DD/MM/YYYY') : null;
+      await setDoc(doc(db, "items", itemId), { favorite: newState, favDate }, { merge: true });
+      const toastMessage = newState ? 'Item successfully added to favorites!' : 'Item removed from favorites!';
+      toast(toastMessage);
+      router.refresh();
+    } catch (e) {
+      toast.error('Sorry an error ocurred, please try again later');
+      console.error("Error changing the favorite the item: ", e);
+    }
   }
 
   return (
@@ -30,15 +43,15 @@ const ItemCard = ({ name = "Esto es un ejemplo", image = "https://daisyui.com/im
           />
         </figure>
         <div className="flex-1 flex items-center px-1 md:px-4">
-          <h4 className="flex-1 text-base-content text-base md:text-3xl font-bold">
+          <h4 className="flex-1 text-base-content line-clamp-2 text-base md:text-3xl font-bold">
             {name}
           </h4>
           <div className="flex flex-col items-center gap-0.5">
             <button className="btn btn-circle border-none bg-inherit shadow-none shrink-0 z-10 text-orange-400 text-xl md:text-2xl" onClick={handleFavoriteAction}>
-              {isFavorite ? <RiStarFill /> : <RiStarLine />}
+              {favorite ? <RiStarFill /> : <RiStarLine />}
             </button>
             {favDate && displayFavDate && (
-              <div className="shrink-0 text-gray-500 text-xs md:text-lg">
+              <div className="shrink-0 text-gray-500 text-xs md:text-sm">
                 {favDate}
               </div>
             )}
@@ -54,7 +67,20 @@ const ItemCard = ({ name = "Esto es un ejemplo", image = "https://daisyui.com/im
           mainActionText="Delete"
           content={<p className="py-4">{`Are you sure that you want to delete "${name}"?`}</p>}
           onCloseHandler={() => setShowModal(false)}
-          mainActionHandler={() => { console.log('Se Borro Item correctamente') }}
+          isLoading={isLoading}
+          mainActionHandler={async () => {
+            try {
+              setIsLoading(true);
+              await deleteDoc(doc(db, "items", itemId));
+              toast.success(`Successfully deleted "${name}" item!`);
+              router.refresh();
+            } catch (e) {
+              toast.error('Sorry an error ocurred, please try again later');
+              console.error("Error deleting the item: ", e);
+            } finally {
+              setIsLoading(false);
+            }
+          }}
         />
       )}
     </Fragment>

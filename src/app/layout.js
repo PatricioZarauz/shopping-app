@@ -19,7 +19,7 @@ const RootLayout = ({ children }) => {
     <html className={poppins.className} lang="en" data-theme="emerald">
       <body>
         <Toaster
-          position="top-right"
+          position="bottom-right"
           toastOptions={{
             duration: 3000,
             success: {

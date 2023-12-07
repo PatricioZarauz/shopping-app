@@ -19,12 +19,13 @@ const ColorInput = ({ label, control, name }) => {
                 type="color"
                 value={value}
                 onChange={onChange}
-                className="w-12 h-12"
+                className="w-12 h-12 cursor-pointer"
               />
             </div>
             <div className="shrink w-32">
               <input
                 type="text"
+                placeholder="Label Color"
                 value={value}
                 onChange={onChange}
                 className={cn("input input-bordered h-12 w-full", { 'input-error': invalid })}
