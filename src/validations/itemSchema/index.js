@@ -1,13 +1,16 @@
 import * as yup from 'yup';
-import { doc, getDoc } from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "@/firebase";
-import hash from 'md5';
 
 const validateUniqueItemName = async (name) => {
-  const id = hash(name);
-  const docSnap = await getDoc(doc(db, "items", id));
+  let isUnique = true;
 
-  return !docSnap.exists();
+  const querySnapshot = await getDocs(query(collection(db, 'items'), where('name', '==', name)));
+  querySnapshot.forEach(() => {
+    isUnique = false;
+  });
+
+  return isUnique;
 }
 
 export default yup.object({
