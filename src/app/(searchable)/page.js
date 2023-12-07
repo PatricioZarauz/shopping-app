@@ -27,8 +27,8 @@ const Home = async ({ searchParams }) => {
         filteredRes[categoryId] = categories[categoryId];
         return;
       }
-      const filteredItems = categories[categoryId].items.filter(({ name }) => name.toLowerCase().includes(searchParams.q.toLowerCase()));
-      if (filteredItems.length) {
+      const filteredItems = categories[categoryId]?.items?.filter(({ name }) => name.toLowerCase().includes(searchParams.q.toLowerCase()));
+      if (filteredItems?.length) {
         filteredRes[categoryId] = { ...categories[categoryId], items: filteredItems };
       }
     })
