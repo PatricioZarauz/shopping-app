@@ -10,14 +10,14 @@ const EmptyPlaceholder = ({ pathname }) => {
   if (pathname == '/favorites') {
     return (
       <p className="text-lg mt-10 text-primary-content text-center">
-        No item was added as favorite yet.
+        No items were added as favorite yet.
       </p>
     );
   }
 
   return (
-    <p className="text-lg mt-10 text-primary-content text-center">
-      No categories added yet. {<Link className="link" href="/categories/create">Add one</Link>}
+    <p className="text-lg absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-primary-content text-center">
+      No categories created yet. {<Link className="link" href="/categories/create">Create one</Link>}
     </p>
   );
 };
@@ -31,7 +31,7 @@ const CategoriesList = ({ categories, displayFavDate = false }) => {
   }, [categories])
 
   const handleDragEnd = ({ destination, source }) => {
-    if (destination.droppableId != source.droppableId) {
+    if (destination?.droppableId != source?.droppableId) {
       return;
     }
 

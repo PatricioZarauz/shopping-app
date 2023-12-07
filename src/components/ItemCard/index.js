@@ -11,7 +11,6 @@ import dayjs from 'dayjs';
 import { useRouter } from "next/navigation";
 
 const ItemCard = ({ id: itemId, name, image, favorite = false, favDate, displayFavDate = false }) => {
-  const [isFavorite, setIsFavorite] = useState(favorite);
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -19,12 +18,12 @@ const ItemCard = ({ id: itemId, name, image, favorite = false, favDate, displayF
   const handleFavoriteAction = async (e) => {
     e.preventDefault();
     try {
-      const newState = !isFavorite;
+      const newState = !favorite;
       const favDate = newState ? dayjs().format('DD/MM/YYYY') : null;
       await setDoc(doc(db, "items", itemId), { favorite: newState, favDate }, { merge: true });
-      const toastMessage = !isFavorite ? 'Item successfully added to favorites!' : 'Item removed from favorites!';
-      toast(toastMessage, { position: "bottom-right" });
-      setIsFavorite(newState);
+      const toastMessage = newState ? 'Item successfully added to favorites!' : 'Item removed from favorites!';
+      toast(toastMessage);
+      router.refresh();
     } catch (e) {
       toast.error('Sorry an error ocurred, please try again later');
       console.error("Error changing the favorite the item: ", e);
@@ -44,15 +43,15 @@ const ItemCard = ({ id: itemId, name, image, favorite = false, favDate, displayF
           />
         </figure>
         <div className="flex-1 flex items-center px-1 md:px-4">
-          <h4 className="flex-1 text-base-content text-base md:text-3xl font-bold">
+          <h4 className="flex-1 text-base-content line-clamp-2 text-base md:text-3xl font-bold">
             {name}
           </h4>
           <div className="flex flex-col items-center gap-0.5">
             <button className="btn btn-circle border-none bg-inherit shadow-none shrink-0 z-10 text-orange-400 text-xl md:text-2xl" onClick={handleFavoriteAction}>
-              {isFavorite ? <RiStarFill /> : <RiStarLine />}
+              {favorite ? <RiStarFill /> : <RiStarLine />}
             </button>
             {favDate && displayFavDate && (
-              <div className="shrink-0 text-gray-500 text-xs md:text-lg">
+              <div className="shrink-0 text-gray-500 text-xs md:text-sm">
                 {favDate}
               </div>
             )}
