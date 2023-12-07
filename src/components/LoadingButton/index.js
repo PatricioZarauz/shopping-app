@@ -6,6 +6,7 @@ const LoadingButton = ({ isLoading, styleProp, type = 'button', onClickAction, c
       className={cn("btn", styleProp)}
       type={type}
       onClick={onClickAction}
+      data-testid="loading-button"
     >
       {isLoading ? (
         <>
