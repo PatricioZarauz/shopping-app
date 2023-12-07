@@ -5,12 +5,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { itemSchema } from "@/validations";
 import { AutoCompleteInput, TextInput } from "@/components/FormInput";
 import toast from "react-hot-toast";
-import { setDoc, doc } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 import { db } from "@/firebase";
-import hash from 'md5';
+import LoadingButton from "@/components/LoadingButton";
 
 const ItemForm = ({ categories }) => {
-  const { reset, handleSubmit, control } = useForm({
+  const { reset, handleSubmit, control, formState: { isSubmitting } } = useForm({
     mode: 'onSubmit',
     defaultValues: {
       favorite: false,
@@ -23,8 +23,7 @@ const ItemForm = ({ categories }) => {
   const onSubmit = async (data) => {
     const { categoryId, ...item } = data;
     try {
-      const id = hash(item.name);
-      await setDoc(doc(db, "items", id), data);
+      await addDoc(collection(db, "items"), data);
       toast.success(`Successfully created "${item.name}" item!`);
       reset();
     } catch (e) {
@@ -38,7 +37,7 @@ const ItemForm = ({ categories }) => {
       <TextInput label="Name" control={control} name="name" />
       <AutoCompleteInput options={categories} label="Category" control={control} name="categoryId" />
       <TextInput label="Image URL" control={control} name="image" />
-      <input className="btn btn-primary" type="submit" value="Create" />
+      <LoadingButton isLoading={isSubmitting} styleProp="btn-primary" type="submit" content="Create" />
     </form>
   );
 };
