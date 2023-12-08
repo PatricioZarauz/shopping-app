@@ -37,7 +37,7 @@ const ItemCard = ({ id: itemId, name, image, favorite = false, favDate, displayF
           <Image
             src={image}
             alt={`${name} - image`}
-            style={{ objectFit: 'fill' }}
+            style={{ objectFit: 'cover' }}
             sizes='100%, 100%'
             fill
           />

@@ -14,6 +14,9 @@ const Home = async () => {
   const querySnapshot = await getDocs(query(collection(db, 'items'), where('favorite', '==', true)));
   querySnapshot.forEach((item) => {
     const info = item.data();
+    if (!categories[info.categoryId]) {
+      return;
+    }
     favorites[info.categoryId] = categories[info.categoryId];
     if (favorites[info.categoryId]['items']) {
       favorites[info.categoryId]['items'] = [...(favorites[info.categoryId]['items']), { ...info, id: item.id }];

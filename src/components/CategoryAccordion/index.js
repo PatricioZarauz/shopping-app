@@ -83,7 +83,7 @@ const CategoryAccordion = ({ id: categoryId, labelColor, name, displayFavDate = 
               setIsLoading(true);
               await deleteDoc(doc(db, "categories", categoryId));
               toast.success(`Successfully deleted "${name}" category!`);
-              router.reload();
+              router.refresh();
             } catch (e) {
               toast.error('Sorry an error ocurred, please try again later');
               console.error("Error deleting category: ", e);
