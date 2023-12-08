@@ -22,16 +22,16 @@ const OneActionModal = ({ onCloseHandler, mainActionHandler, mainActionText = "O
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-
   return (
-    <dialog ref={modalRef} className="modal modal-bottom md:modal-middle" >
+    <dialog ref={modalRef} className="modal modal-bottom md:modal-middle" data-testid="dialog-component" >
       <div className="modal-box">
-        <h3 className="font-bold text-lg">{title}</h3>
+        <h3 className="font-bold text-lg" data-testid="dialog-title">{title}</h3>
         {content}
         <div className="modal-action">
           <button
             className="btn btn-secondary"
             onClick={exitAction}
+            data-testid="cancel-button"
           >
             {cancelActionText}
           </button>

@@ -1,6 +1,4 @@
-const toSnakeCase = (text = '') => {
-  return (text.toLowerCase().replace(' ', '_'));
-};
+// Code taken from https://stackoverflow.com/questions/3942878/how-to-decide-font-color-in-white-or-black-depending-on-background-color
 
 const textColorBasedOnBgColor = (bgColor, lightColor = '#FFFFFF', darkColor = '#000000') => {
   const color = (bgColor.charAt(0) === '#') ? bgColor.substring(1, 7) : bgColor;
@@ -18,4 +16,4 @@ const textColorBasedOnBgColor = (bgColor, lightColor = '#FFFFFF', darkColor = '#
   return (L > 0.179) ? darkColor : lightColor;
 }
 
-export { toSnakeCase, textColorBasedOnBgColor };
+export { textColorBasedOnBgColor };

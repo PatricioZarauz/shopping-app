@@ -14,6 +14,9 @@ const Home = async ({ searchParams }) => {
   const querySnapshot = await getDocs(collection(db, 'items'));
   querySnapshot.forEach((item) => {
     const info = item.data();
+    if (!categories[info.categoryId]) {
+      return;
+    }
     if (categories[info.categoryId]['items']) {
       categories[info.categoryId]['items'] = [...(categories[info.categoryId]['items']), { ...info, id: item.id }];
     } else {

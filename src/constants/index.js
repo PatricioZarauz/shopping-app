@@ -1,0 +1,3 @@
+const MOBILESCREENSIZE = 400;
+
+export { MOBILESCREENSIZE }

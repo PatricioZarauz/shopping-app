@@ -8,13 +8,14 @@ const SearchBar = () => {
   const searchParams = useSearchParams();
   const { register, handleSubmit } = useForm({ mode: 'onSubmit', defaultValues: { q: searchParams.get('q') } })
   const router = useRouter();
+
   const sumbitHandler = ({ q }) => {
     const queryParams = q ? `?${new URLSearchParams({ q })}` : '';
     router.push(`/${queryParams}`)
   }
 
   return (
-    <div className="w-full flex-none md:shrink md:w-fit">
+    <div className="w-full flex-none md:shrink md:w-fit" data-testid='search-bar'>
       <form onSubmit={handleSubmit(sumbitHandler)} className="input input-bordered w-full">
         <div className="flex h-full items-center">
           <input type="search" placeholder="Search" {...register("q")} className="w-full" />
